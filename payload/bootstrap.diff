@@ -1,4 +1,4 @@
-https://github.com/RealYoti/henkaku
+https://github.com/RealYoti/h-encore
 diff --git a/bootstrap/bootstrap.c b/bootstrap/bootstrap.c
 index eb62117..6fc0a2a 100644
 --- a/bootstrap/bootstrap.c
