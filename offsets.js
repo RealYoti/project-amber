@@ -313,4 +313,26 @@ version_deps = {
       offsets: SceSysmem_offsets_v363_v373,
     },
   },
+  "3.74": { // untested
+    "SceWebKit": {
+      gadgets: SceWebKit_gadgets_v368_v373,
+      offsets: SceWebKit_offsets_v368_v373,
+    },
+    "SceLibc": {
+      functions: SceLibc_functions_v360_v373,
+      gadgets: SceLibc_gadgets_v360_v373,
+      offsets: SceLibc_offsets_v360_v373,
+    },
+    "SceNet": {
+      functions: SceNet_functions_v360_v373,
+      offsets: SceNet_offsets_v360_v373,
+    },
+    "SceNetPs": {
+      gadgets: SceNetPs_gadgets_v371_v373,
+      offsets: SceNetPs_offsets_v371_v373,
+    },
+    "SceSysmem": {
+      offsets: SceSysmem_offsets_v363_v373,
+    },
+  },
 };
