@@ -1,6 +1,6 @@
 #include <inttypes.h>
 
-// #include "bootstrap.h"
+#include "bootstrap.h"
 
 // ALL 3.63-3.73 SPECIFIC SECTIONS ARE MARKED WITH "// BEGIN 3.63-3.73"
 
@@ -661,7 +661,7 @@ int thread_main(int args, void *argp) {
 		LOG("ur ksceIoOpen: %x", fd);
 	}
 	if (fd >= 0) {
-		// ret = ksceIoWrite(fd, bootstrap_self, bootstrap_self_len);
+		ret = ksceIoWrite(fd, bootstrap_self, bootstrap_self_len);
 		LOG("ksceIoWrite: %x", ret);
 		ksceIoClose(fd);
 
