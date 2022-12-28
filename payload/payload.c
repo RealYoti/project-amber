@@ -77,50 +77,48 @@ typedef uint32_t u32_t;
 typedef uint16_t u16_t;
 typedef uint8_t u8_t;
 
-typedef struct segment_info
-{
+typedef struct segment_info {
 	int           size;   // this structure size (0x18)
 	int           perms;  // probably rwx in low bits
-	void            *vaddr; // address in memory
+	void          *vaddr; // address in memory
 	int           memsz;  // size in memory
 	int           flags;  // meanig unknown
 	int           res;    // unused?
 } segment_info_t;
 
 typedef struct SceModInfo {
-	int size;           //0
-	int UID;            //4
-	int mod_attr;       //8
-	char name[0x1C];        //0xC
-	u32_t unk0;         //0x28
-	void *module_start;     //0x2C addr0
-	void *module_init;      //0x30 addr1
-	void *module_stop;      //0x34 addr2
-	void *exidx_start;      //0x38 addr3
-	void *exidx_end;        //0x3C addr4
-	void *addr5;        //0x40 addr5
-	void *addr6;        //0x44 addr6
-	void *module_top;       //0x48 addr7
-	void *addr8;        //0x4C addr8
-	void *addr9;        //0x50 addr9
-	char filepath[0x100];   //0x54
+	int size;                    //0
+	int UID;                     //4
+	int mod_attr;                //8
+	char name[0x1C];             //0xC
+	u32_t unk0;                  //0x28
+	void *module_start;          //0x2C addr0
+	void *module_init;           //0x30 addr1
+	void *module_stop;           //0x34 addr2
+	void *exidx_start;           //0x38 addr3
+	void *exidx_end;             //0x3C addr4
+	void *addr5;                 //0x40 addr5
+	void *addr6;                 //0x44 addr6
+	void *module_top;            //0x48 addr7
+	void *addr8;                 //0x4C addr8
+	void *addr9;                 //0x50 addr9
+	char filepath[0x100];        //0x54
 	segment_info_t  segments[4]; //0x58
-	u32_t unk2;         //0x1B4
+	u32_t unk2;                  //0x1B4
 } SceModInfo; //0x1B8
 
 #define MOD_LIST_SIZE 0x80
 
-typedef struct module_imports_2
-{
+typedef struct module_imports_2 {
   u16_t size; // 0x24
   u16_t version;
   u16_t flags;
   u16_t num_functions;
   u32_t reserved1;
   u32_t lib_nid;
-  char     *lib_name;
+  char  *lib_name;
   u32_t *func_nid_table;
-  void     **func_entry_table;
+  void  **func_entry_table;
   u32_t unk1;
   u32_t unk2;
 } module_imports_2_t;
@@ -139,27 +137,26 @@ typedef struct module_exports // thanks roxfan
 	void    **entry_table;  // array of pointers to exported functions and then variables
 } module_exports_t;
 
-typedef struct module_info // thanks roxfan
-{
-	u16_t   modattribute;  // ??
-	u16_t   modversion;    // always 1,1?
-	char    modname[27];   ///< Name of the module
-	u8_t    type;          // 6 = user-mode prx?
-	void    *gp_value;     // always 0 on ARM
-	int   ent_top;       // beginning of the export list (sceModuleExports array)
-	int   ent_end;       // end of same
-	int   stub_top;      // beginning of the import list (sceModuleStubInfo array)
-	int   stub_end;      // end of same
-	u32_t   module_nid;    // ID of the PRX? seems to be unused
-	int   field_38;      // unused in samples
-	int   field_3C;      // I suspect these may contain TLS info
-	int   field_40;      //
-	int   mod_start;     // 44 module start function; can be 0 or -1; also present in exports
-	int   mod_stop;      // 48 module stop function
-	int   exidx_start;   // 4c ARM EABI style exception tables
-	int   exidx_end;     // 50
-	int   extab_start;   // 54
-	int   extab_end;     // 58
+typedef struct module_info { // thanks roxfan
+	u16_t modattribute; // ??
+	u16_t modversion;   // always 1,1?
+	char  modname[27];  //< Name of the module
+	u8_t  type;         // 6 = user-mode prx?
+	void  *gp_value;    // always 0 on ARM
+	int   ent_top;      // beginning of the export list (sceModuleExports array)
+	int   ent_end;      // end of same
+	int   stub_top;     // beginning of the import list (sceModuleStubInfo array)
+	int   stub_end;     // end of same
+	u32_t module_nid;   // ID of the PRX? seems to be unused
+	int   field_38;     // unused in samples
+	int   field_3C;     // I suspect these may contain TLS info
+	int   field_40;     //
+	int   mod_start;    // 44 module start function; can be 0 or -1; also present in exports
+	int   mod_stop;     // 48 module stop function
+	int   exidx_start;  // 4c ARM EABI style exception tables
+	int   exidx_end;    // 50
+	int   extab_start;  // 54
+	int   extab_end;    // 58
 } module_info_t; // 5c?
 
 int strcmp(const char *s1, const char *s2) {
@@ -819,30 +816,62 @@ typedef struct chunk_footer {
 } chunk_footer_t;
 
 void fix_netps_heap(uint32_t iflist_addr) {
+	int getiflist_offset = 0;
+	int free_offset = 0;
+	int control_offset = 0;
+	int ifunit_offset = 0;
+	int if_clone_destroy_offset = 0;
+	int in_control_offset = 0;
+	int sce_psnet_bnet_mutex_unlock_offset = 0;
+	int sce_psnet_bnet_mutex_lock_offset = 0;
+	int global_mutex_offset = 0;
+	int heap_mutex_offset = 0;
 
-	// BEGIN 3.65-3.70
-	int (*getiflist)() = (void*)(scenet_code + 0x2fc1);
-	int (*free)() = (void*)(scenet_code + 0x5b09);
-	int (*control)() = (void*)(scenet_code + 0x89bd);
-	int (*ifunit)() = (void*)(scenet_code + 0xf835);
-	int (*if_clone_destroy)() = (void*)(scenet_code + 0xf905);
-	int (*in_control)() = (void*)(scenet_code + 0x1ac15);
-	int (*sce_psnet_bnet_mutex_unlock)() = (void*)(scenet_code + 0x2a3ed);
-	int (*sce_psnet_bnet_mutex_lock)() = (void*)(scenet_code + 0x2a355);
+	switch (appmgr_info->module_nid) {
+		case 0x23B967C5: // 3.63 retail
+		case 0x1C9879D6: // 3.65 retail
+		case 0x54E2E984: // 3.67 retail
+		case 0xC3C538DE: // 3.68 retail
+		case 0x321E4852: // 3.69 retail
+		case 0x700DA0CD: // 3.70 retail
+			getiflist_offset = 0x2fc1;
+			free_offset = 0x5b09;
+			control_offset = 0x89bd;
+			ifunit_offset = 0xf835;
+			if_clone_destroy_offset = 0xf905;
+			in_control_offset = 0x1ac15;
+			sce_psnet_bnet_mutex_unlock_offset = 0x2a3ed;
+			sce_psnet_bnet_mutex_lock_offset = 0x2a355;
+			global_mutex_offset = 0x850;
+			heap_mutex_offset = 0x88c;
+			break;
+		case 0xF7846B4E: // 3.71 retail
+		case 0xA8E80BA8: // 3.72 retail
+		case 0xB299D195: // 3.73 retail
+		case 0x30007BD3: // 3.74 retail
+			getiflist_offset = 0x2fc1;
+			free_offset = 0x5b05;
+			control_offset = 0x89ed;
+			ifunit_offset = 0xf865; // stolen from SKGleba
+			if_clone_destroy_offset = 0xf935;
+			in_control_offset = 0x1ac45; // stolen from SKGleba
+			sce_psnet_bnet_mutex_unlock_offset = 0x2a41d;
+			sce_psnet_bnet_mutex_lock_offset = 0x2a385;
+			global_mutex_offset = 0x850;
+			heap_mutex_offset = 0x88c;
+			break;
+	}
+	int (*getiflist)() = (void*)(scenet_code + getiflist_offset);
+	int (*free)() = (void*)(scenet_code + free_offset);
+	int (*control)() = (void*)(scenet_code + control_offset);
+	int (*ifunit)() = (void*)(scenet_code + ifunit_offset);
+	int (*if_clone_destroy)() = (void*)(scenet_code + if_clone_destroy_offset);
+	int (*in_control)() = (void*)(scenet_code + in_control_offset);
+	int (*sce_psnet_bnet_mutex_unlock)() = (void*)(scenet_code + sce_psnet_bnet_mutex_unlock_offset);
+	int (*sce_psnet_bnet_mutex_lock)() = (void*)(scenet_code + sce_psnet_bnet_mutex_lock_offset);
 	void *global_mutex = (void*)((u32_t)scenet_data + 0x850);
 	void *heap_mutex = (void*)((u32_t)scenet_data + 0x88c);
-	// END 3.65-3.70
-/*
-	// BEGIN 3.71-3.73
-	int (*free)() = (void*)(scenet_code + 0x5b05);
-	int (*control)() = (void*)(scenet_code + 0x89ed);
-	int (*if_clone_destroy)() = (void*)(scenet_code + 0xf935);
-	int (*sce_psnet_bnet_mutex_unlock)() = (void*)(scenet_code + 0x2a41d);
-	int (*sce_psnet_bnet_mutex_lock)() = (void*)(scenet_code + 0x2a385);
-	void *global_mutex = (void*)((u32_t)scenet_data + 0x850);
-	void *heap_mutex = (void*)((u32_t)scenet_data + 0x88c);
-	// END 3.71-3.73
-*/
+
 	sce_psnet_bnet_mutex_lock(heap_mutex, 0);
 
 	chunk_header_t *iflist_header = (chunk_header_t *)(iflist_addr - 0x20);
