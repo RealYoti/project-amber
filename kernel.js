@@ -1,4 +1,4 @@
-/* exploit.js -- implementation of the kernel exploit
+/* kernel.js -- implementation of the kernel exploit
  *
  * Copyright (C) 2020 TheFloW
  *
