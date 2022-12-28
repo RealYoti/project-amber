@@ -197,7 +197,7 @@ version_deps = {
     },
     "SceNetPs": {
       gadgets: SceNetPs_gadgets_v363_v370,
-      offsets: SceNetPs_gadgets_v363_v370,
+      offsets: SceNetPs_offsets_v363_v370,
     },
     "SceSysmem": {
       offsets: SceSysmem_offsets_v363_v373,
@@ -219,7 +219,7 @@ version_deps = {
     },
     "SceNetPs": {
       gadgets: SceNetPs_gadgets_v363_v370,
-      offsets: SceNetPs_gadgets_v363_v370,
+      offsets: SceNetPs_offsets_v363_v370,
     },
     "SceSysmem": {
       offsets: SceSysmem_offsets_v363_v373,
@@ -241,7 +241,7 @@ version_deps = {
     },
     "SceNetPs": {
       gadgets: SceNetPs_gadgets_v363_v370,
-      offsets: SceNetPs_gadgets_v363_v370,
+      offsets: SceNetPs_offsets_v363_v370,
     },
     "SceSysmem": {
       offsets: SceSysmem_offsets_v363_v373,
