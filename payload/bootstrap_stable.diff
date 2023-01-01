@@ -1,8 +1,9 @@
+https://github.com/RealYoti/h-encore
 diff --git a/bootstrap/bootstrap.c b/bootstrap/bootstrap.c
-index eb62117..b5c789b 100644
+index eb62117..6fc0a2a 100644
 --- a/bootstrap/bootstrap.c
 +++ b/bootstrap/bootstrap.c
-@@ -10,11 +10,11 @@
+@@ -10,7 +10,7 @@
  #include "pspdebug.h"
  
  #define WHITE 0xFFFFFFFF
@@ -10,11 +11,6 @@ index eb62117..b5c789b 100644
 +#define AMBER 0xFF00BFFF
  
  #define printf psvDebugScreenPrintf
- 
--#define VITASHELL_BASE_ADDRESS "https://raw.githubusercontent.com/RealYoti/VitaShell/master/release"
-+#define VITASHELL_BASE_ADDRESS "http://vitawiki.xyz/release"
- 
- #define INCLUDE_EXTERN_RESOURCE(name) extern unsigned char _binary_res_##name##_start; extern unsigned char _binary_res_##name##_size; \
  
 @@ -47,7 +47,7 @@ enum Items {
    EXIT,
