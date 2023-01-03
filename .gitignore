@@ -1,3 +1,5 @@
 payload.bin
+payload/*.o
+payload/*.elf
 payload/payload.bin
-payload/payload_stable.bin
+payload/payload_github.bin
