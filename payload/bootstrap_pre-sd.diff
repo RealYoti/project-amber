@@ -1,0 +1,99 @@
+https://github.com/RealYoti/h-encore
+diff --git a/bootstrap/bootstrap.c b/bootstrap/bootstrap.c
+index eb62117..b5c789b 100644
+--- a/bootstrap/bootstrap.c
++++ b/bootstrap/bootstrap.c
+@@ -10,11 +10,11 @@
+ #include "pspdebug.h"
+ 
+ #define WHITE 0xFFFFFFFF
+-#define RED   0xFF0000FF
++#define AMBER 0xFF00BFFF
+ 
+ #define printf psvDebugScreenPrintf
+ 
+-#define VITASHELL_BASE_ADDRESS "https://raw.githubusercontent.com/RealYoti/VitaShell/master/release"
++#define VITASHELL_BASE_ADDRESS "http://vitawiki.xyz/release"
+ 
+ #define INCLUDE_EXTERN_RESOURCE(name) extern unsigned char _binary_res_##name##_start; extern unsigned char _binary_res_##name##_size; \
+ 
+@@ -47,7 +47,7 @@ enum Items {
+   EXIT,
+   INSTALL_HENKAKU,
+   DOWNLOAD_VITASHELL,
+-  PERSONALIZE_SAVEDATA,
++//PERSONALIZE_SAVEDATA,
+   RESET_TAIHEN_CONFIG
+ };
+ 
+@@ -55,7 +55,7 @@ const char *items[] = {
+   "Exit",
+   "Install HENkaku",
+   "Download VitaShell",
+-  "Personalize savedata",
++//"Personalize savedata",
+   "Reset taiHEN config.txt"
+ };
+ 
+@@ -378,7 +378,7 @@ int reset_taihen_config() {
+ 
+   return 0;
+ }
+-
++/*
+ int personalize_savedata(int syscall_id) {
+   int res;
+   int fd;
+@@ -402,7 +402,7 @@ int personalize_savedata(int syscall_id) {
+ 
+   return 0;
+ }
+-
++*/
+ int enter_cross = 0;
+ uint32_t old_buttons = 0, current_buttons = 0, pressed_buttons = 0;
+ 
+@@ -450,17 +450,17 @@ int print_menu(int sel) {
+   int i;
+ 
+   psvDebugScreenSetXY(0, 0);
+-  psvDebugScreenSetTextColor(RED);
+-  printf("\n h-encore bootstrap menu\n\n");
++  psvDebugScreenSetTextColor(AMBER);
++  printf("\n HENlo bootstrap menu\n\n");
+ 
+   for (i = 0; i < N_ITEMS; i++) {
+-    psvDebugScreenSetTextColor(sel == i ? RED : WHITE);
++    psvDebugScreenSetTextColor(sel == i ? AMBER : WHITE);
+     printf(" [%c] %s\n", sel == i ? '*' : ' ', items[i]);
+   }
+ 
+   printf("\n");
+ 
+-  psvDebugScreenSetTextColor(RED);
++  psvDebugScreenSetTextColor(AMBER);
+   printf("----------------------------\n\n");
+ 
+   return 0;
+@@ -518,7 +518,7 @@ int module_start(SceSize args, void *argp) {
+ 
+     if ((enter_cross && pressed_buttons & SCE_CTRL_CROSS) ||
+         (!enter_cross && pressed_buttons & SCE_CTRL_CIRCLE)) {
+-      psvDebugScreenSetTextColor(RED);
++      psvDebugScreenSetTextColor(AMBER);
+ 
+       if (sel == EXIT) {
+         printf(" > Exiting...\n");
+@@ -532,10 +532,12 @@ int module_start(SceSize args, void *argp) {
+         printf(" > Downloading VitaShell...\n");
+         sceKernelDelayThread(500 * 1000);
+         res = download_vitashell();
++/*
+       } else if (sel == PERSONALIZE_SAVEDATA) {
+         printf(" > Personalizing savedata...\n");
+         sceKernelDelayThread(500 * 1000);
+         res = personalize_savedata(syscall_id);
++*/
+       } else if (sel == RESET_TAIHEN_CONFIG) {
+         if (wait_confirm(" > Are you sure you want to reset taiHEN config.txt?\n")) {
+           printf(" > Resetting taiHEN config.txt...\n");
