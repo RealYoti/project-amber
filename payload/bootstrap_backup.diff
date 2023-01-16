@@ -1,7 +1,7 @@
 https://github.com/RealYoti/h-encore
 https://github.com/RealYoti/gamecard-microsd
 diff --git a/bootstrap/bootstrap.c b/bootstrap/bootstrap.c
-index eb62117..24e76ad 100644
+index eb62117..430f3db 100644
 --- a/bootstrap/bootstrap.c
 +++ b/bootstrap/bootstrap.c
 @@ -10,14 +10,15 @@
@@ -58,32 +58,7 @@ index eb62117..24e76ad 100644
    "Reset taiHEN config.txt"
  };
  
-@@ -307,8 +322,24 @@ int download_vitashell() {
-   init_net();
- 
-   remove("ux0:patch/VITASHELL");
-+  remove("ux0:temp/app");
- 
-   sceIoMkdir("ux0:VitaShell", 0777);
-+  sceIoMkdir("ux0:app", 0777);
-+  sceIoMkdir("ux0:app/VITASHELL", 0777);
-+  sceIoMkdir("ux0:appmeta", 0777);
-+  sceIoMkdir("ux0:appmeta/VITASHELL", 0777);
-+  sceIoMkdir("ux0:bgdl", 0777);
-+  sceIoMkdir("ux0:cache", 0777);
-+  sceIoMkdir("ux0:data", 0777);
-+  sceIoMkdir("ux0:license", 0777);
-+  sceIoMkdir("ux0:license/app", 0777);
-+  sceIoMkdir("ux0:license/app/VITASHELL", 0777);
-+  sceIoMkdir("ux0:patch", 0777);
-+  sceIoMkdir("ux0:user", 0777);
-+  sceIoMkdir("ux0:user/00", 0777);
-+  sceIoMkdir("ux0:user/00/savedata", 0777);
-+  sceIoMkdir("ux0:user/00/savedata/VITASHELL", 0777);
-   sceIoMkdir("ux0:temp", 6);
-   sceIoMkdir("ux0:temp/app", 6);
-   sceIoMkdir("ux0:temp/app/sce_sys", 6);
-@@ -353,7 +384,7 @@ int install_henkaku() {
+@@ -353,7 +368,7 @@ int install_henkaku() {
    return 0;
  }
  
@@ -92,7 +67,7 @@ index eb62117..24e76ad 100644
    int fd;
  
    // write default config
-@@ -363,42 +394,36 @@ int write_taihen_config(const char *path, int recovery) {
+@@ -363,42 +378,36 @@ int write_taihen_config(const char *path, int recovery) {
      sceIoWrite(fd, taihen_config_recovery_header, sizeof(taihen_config_recovery_header) - 1);
    }
    sceIoWrite(fd, taihen_config_header, sizeof(taihen_config_header) - 1);
@@ -153,7 +128,7 @@ index eb62117..24e76ad 100644
  
    return 0;
  }
-@@ -450,17 +475,17 @@ int print_menu(int sel) {
+@@ -450,17 +459,17 @@ int print_menu(int sel) {
    int i;
  
    psvDebugScreenSetXY(0, 0);
@@ -175,7 +150,7 @@ index eb62117..24e76ad 100644
    printf("----------------------------\n\n");
  
    return 0;
-@@ -518,7 +543,7 @@ int module_start(SceSize args, void *argp) {
+@@ -518,7 +527,7 @@ int module_start(SceSize args, void *argp) {
  
      if ((enter_cross && pressed_buttons & SCE_CTRL_CROSS) ||
          (!enter_cross && pressed_buttons & SCE_CTRL_CIRCLE)) {
@@ -184,7 +159,7 @@ index eb62117..24e76ad 100644
  
        if (sel == EXIT) {
          printf(" > Exiting...\n");
-@@ -532,10 +557,10 @@ int module_start(SceSize args, void *argp) {
+@@ -532,10 +541,10 @@ int module_start(SceSize args, void *argp) {
          printf(" > Downloading VitaShell...\n");
          sceKernelDelayThread(500 * 1000);
          res = download_vitashell();
