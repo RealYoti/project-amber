@@ -14,9 +14,9 @@ WebKit+Kernel exploit chain for all actual PS Vita firmwares
  5. Reopen host with your real firmware (e.g. http://vitawiki.xyz/henlo?3.65)
  6. Download VitaShell -> Exit
 #### Download VitaShell errors
- * 80010013 Memory card not detected, recheck your memory card in [Settings](https://manuals.playstation.net/document/en/psvita/settings/system.html)
- * 80af5025 Reboot -> open host -> Exit -> open host -> Download VitaShell
- * 80870005 Reboot -> open host -> Exit, run VitaShell from the Home screen
+ * `80010013` Memory card not detected, recheck your memory card in [Settings](https://manuals.playstation.net/document/en/psvita/settings/system.html)
+ * `80af5025` Reboot -> open host -> Exit -> open host -> Download VitaShell
+ * `80870005` Reboot -> open host -> Exit, run VitaShell from the Home screen
 
 ## Usage
  1. Open HENlo host (e.g. http://vitawiki.xyz/henlo) in the Vita browser
